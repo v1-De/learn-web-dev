@@ -1,13 +1,428 @@
 /* Стили страницы.
    Пишите здесь. */
 
-* {
+*
+{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
+main
+{
+  padding-bottom: 20px;
+  padding-top: 20px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px
+}
+
+body
+{
   min-height: 100vh;
-  font-family: sans-serif;
+  font-family: "DM Sans", sans-serif;
+}
+
+header
+{
+  background: #202020;
+}
+
+footer
+{
+  background: #202020;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 10px;
+}
+
+.navbar
+{
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #fff;
+}
+
+.logo
+{
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+}
+
+.nav-list
+{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 40px;
+}
+
+.nav-list-item
+{
+  font-size: 20px;
+  line-height: 25px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.step-indicator
+{
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  gap: 40px;
+}
+
+.step-item
+{
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #D0D0D0;
+  border-radius: 2em;
+  width: 180px;
+  height: 50px;
+  font-weight: bold;
+  gap: 10px
+}
+
+.step-item.completed
+{
+  border: 1px solid #3DC526;
+}
+
+.step-item.completed .step-item-label
+{
+  color: #3DC526
+}
+
+.step-item.current
+{
+  border: 1px solid #33BBFF;
+}
+
+.step-item.current .step-item-label
+{
+  color: #33BBFF
+}
+
+.circle
+{
+  display: flex;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background-color: #D0D0D0;
+  justify-content: center;
+  align-items: center;
+  color: #000;
+  width: 37px;
+  height: 37px;
+  font-size: 16px;
+}
+
+.step-item.completed .circle
+{
+  background-color: #3DC526;
+}
+
+.step-item.current .circle
+{
+  background-color: #33BBFF;
+}
+
+.step-item-label
+{
+  padding-left: 5px;
+  color: #D0D0D0;  
+  font-size: 14px;
+}
+
+.step-line
+{
+  width: 20px;
+  height: 0px;
+  border: 1px solid #D0D0D0;
+}
+
+.header-row
+{
+  padding: 10px;
+  background-color: #202020;
+  border-radius: 1em;
+  display: flex;
+  align-items: center;
+  width: 1000px;
+}
+
+.header-row-label
+{
+  padding-left: 20px;
+  color: #33BBFF;
+  font-size: 28px;
+  padding-right: 100px;
+}
+
+.back-btn
+{
+  padding: 15px;
+  border-radius: 100px;
+  background: transparent;
+  border: 1px solid #D0D0D0;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  color: #D0D0D0;
+}
+
+.calendar-time-layout
+{
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  width: 1000px;
+}
+
+.calendar-select, .time-select
+{
+  padding: 20px;
+  background-color: #202020;
+  color: #fff;
+  border-radius: 1em;
+  flex-grow: 1;
+}
+
+.calendar-header
+{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 15px;
+}
+
+.btn-group
+{
+  display: flex;
+  gap: 10px;
+}
+
+.calendar-label, .time-select-label
+{
+  color: #fff;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.calendar-control-btn
+{
+  border-radius: 0.4em;
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 30px;
+}
+.days-labels
+{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 15px;
+}
+
+.day-label
+{
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.days-row
+{
+  display: flex;
+  gap: 20px;
+  padding-bottom: 10px;
+}
+
+.day
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  color: #000;
+  border-radius: 2em;
+  border: 1px solid #fff;
+  width: 60px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.time-select-header
+{
+  padding-bottom: 30px;
+}
+
+.time-select-row
+{
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  padding-bottom: 20px;
+}
+
+.time-select-item
+{
+  padding: 20px;
+  width: 150px;
+  height: 50px;
+  background-color: #fff;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  border-radius: 1em;
+  border: 1px solid #fff;
+  cursor: pointer;
+}
+
+.time-select-item p
+{
+  font-size: 12px;
+}
+
+.footer-cta-bar
+{
+  flex-grow: 1;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #202020;
+  border-radius: 1em;
+  width: 1000px;
+}
+
+.footer-cta-text
+{
+  font-size: 16px;
+  color: #D0D0D0;
+}
+
+.next-btn
+{
+  padding: 10px;
+  border-radius: 2em;
+  background-color: #33BBFF;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 120px;
+}
+
+.line
+{
+  width: 1100px;
+  height: 0px;
+  border: 1px solid #696969;
+}
+
+.contacts-label, .phone
+{
+  font-size: 14px;
+  font-weight: bold;
+  color: #D0D0D0;
+  padding-bottom: 10px;
+}
+
+.add-footer-content
+{
+  display: flex;
+  
+  width: 100%;
+  justify-content:space-between;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  max-width: 1000px;
+}
+
+.main-footer-content
+{
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 40px;
+  width: 100%;
+}
+
+.op-hours-content, .address
+{
+  font-size: 14px;
+  color: #D0D0D0;
+}
+
+.op-hours-label
+{
+  font-size: 14px;
+  font-weight: bold;
+  color: #D0D0D0;
+  padding-bottom: 10px;
+}
+
+.services-desc
+{
+  font-size: 12px;
+  color: #D0D0D0;
+  padding-top: 10px;
+}
+
+.copyright
+{
+  font-size: 10px;
+  color: #696969;
+}
+
+.conf-policy
+{
+  font-size: 10px;
+  color: #696969;
+  text-decoration: underline;
+}
+
+.unavailable
+{
+  color: #c0c0c0;
+  cursor: auto;
+}
+
+.selected
+{
+  background-color: #33BBFF;
 }
