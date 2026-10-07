@@ -71,6 +71,12 @@ footer
   line-height: 25px;
   color: #fff;
   cursor: pointer;
+  text-decoration: none;
+}
+
+.nav-list-item:hover
+{
+  color:#D0D0D0;
 }
 
 .step-indicator
@@ -184,6 +190,11 @@ footer
   color: #D0D0D0;
 }
 
+.back-btn:hover
+{
+  background-color: #696969;
+}
+
 .calendar-time-layout
 {
   display: flex;
@@ -237,13 +248,20 @@ footer
   height: 30px;
   width: 30px;
 }
+
+.calendar-control-btn:hover
+{
+  background-color: #D0D0D0;
+}
+
 .days-labels
 {
+  padding-left: 20px;
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: start;
   align-items: center;
-  gap: 20px;
+  gap: 65px;
   padding-bottom: 15px;
 }
 
@@ -275,6 +293,11 @@ footer
   cursor: pointer;
 }
 
+.day:hover
+{
+  background-color: #D0D0D0;
+}
+
 .time-select-header
 {
   padding-bottom: 30px;
@@ -303,6 +326,11 @@ footer
   border-radius: 1em;
   border: 1px solid #fff;
   cursor: pointer;
+}
+
+.time-select-item:hover
+{
+  background-color:#D0D0D0;
 }
 
 .time-select-item p
@@ -343,6 +371,11 @@ footer
   align-items: center;
   height: 40px;
   width: 120px;
+}
+
+.next-btn:hover
+{
+  background-color: #2792c7;
 }
 
 .line
@@ -419,7 +452,8 @@ footer
 .unavailable
 {
   color: #c0c0c0;
-  cursor: auto;
+  cursor: not-allowed;
+  text-decoration: line-through;
 }
 
 .selected
