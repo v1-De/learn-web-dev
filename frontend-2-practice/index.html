@@ -5,10 +5,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Выбор даты и времени</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
   </head>
-  <body>
+  <body>   
     <div class="page">
-      <!-- Перенесите вашу верстку. Удалите статичные данные. Подключите скрипт -->
+      <header>
+        <div class="navbar">
+            <img class="logo" src="images/logo.jpeg" alt="logo.jpeg">
+            <nav class="nav-list">
+              <a class="nav-list-item" href="#">Услуги</a>
+              <a class="nav-list-item" href="#">Галерея</a>
+              <a class="nav-list-item" href="#">Команда</a>
+              <a class="nav-list-item" href="#">Отзывы</a>
+              <a class="nav-list-item" href="#">Контакты</a>
+            </nav>
+        </div>
+        <div class="step-indicator">
+            <div class="step-item completed">
+              <div class="circle">1</div>
+              <span class="step-item-label">Выбор специалиста</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step-item completed">
+              <div class="circle">2</div>
+              <span class="step-item-label">Выбор услуг</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step-item current">
+              <div class="circle">3</div>
+              <span class="step-item-label">Выбор даты</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step-item">
+              <div class="circle">4</div>
+              <span class="step-item-label">Ваши контакты</span>
+            </div>
+            <div class="step-line"></div>
+            <div class="step-item">
+              <div class="circle">5</div>
+              <span class="step-item-label">Подвтерждение</span>
+            </div>
+        </div>
+      </header>
+
+      <main>      
+        <div class="header-row">
+          <button type="button" class="back-btn">← Назад</button>
+          <h1 class="header-row-label">Пожалуйста, выберите дату и время для записи</h1>
+        </div>
+
+        <div class="calendar-time-layout">
+          <div class="calendar-select">
+            <div class="calendar-header">
+              <div class="calendar-label" id = "calendar-label">Июнь 2025</div>
+              <div class="btn-group">
+                <button class="calendar-control-btn" id = "prev-month-btn" >&lt;</button>
+                <button class="calendar-control-btn" id = "next-month-btn">&gt;</button>
+              </div>
+            </div>
+            <div class="days-labels">
+              <div class="day-label">Пн</div>
+              <div class="day-label">Вт</div>
+              <div class="day-label">Ср</div>
+              <div class="day-label">Чт</div>
+              <div class="day-label">Пт</div>
+              <div class="day-label">Сб</div>
+              <div class="day-label">Вс</div>
+            </div>
+            <div class="day-select" id = "day-select"></div>
+          </div>
+          <div class="time-select">
+            <div class="time-select-header">
+              <h1 class="time-select-label">Доступное время</h1>
+            </div>
+            <div class="time-select-list" id = "time-select-list"> </div>
+          </div>
+        </div>
+        <div class="footer-cta-bar">
+            <div class="footer-cta-content">
+              <div class="footer-cta-text">Запись на:</div>
+              <div class="footer-cta-text" id = "selected-day">11.06.2025,</div>
+              <div class="footer-cta-text" id = "selected-time">12:00</div>
+            </div>
+            <button type="button" class="next-btn">Далее</button>
+        </div>
+      </main>
+      <footer>
+        <div class="main-footer-content">
+          <div>
+            <img class="logo" src="images/logo.jpeg" alt="logo.jpeg">
+            <div class="services-desc">Дружелюбное описание услуг</div>
+          </div>
+
+          <div class="contacts">
+            <div class="contacts-label">КОНТАКТЫ</div>
+            <div class="address">&#128205; ул.Садовая, 15, Москва</div>
+            <div class="phone">&#9742; +7(495)123-45-67</div>
+          </div>
+          <div class="op-hours">
+            <div class="op-hours-label">РЕЖИМ РАБОТЫ</div>
+            <div class="op-hours-content">Пн-Пт: 9:00 - 21:00<br>Сб-Вс: 10:00 - 19:00</div>
+          </div>
+        </div>
+        <div class="line"></div>
+        <div class="add-footer-content">
+          <div class="copyright">&#169; Все прав защищены</div>
+          <div class="conf-policy">Политика конфиденциальности</div>
+        </div>
+      </footer>
     </div>
+    
+    <script src="script.js"></script>
   </body>
 </html>
