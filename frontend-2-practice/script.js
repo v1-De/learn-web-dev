@@ -100,16 +100,15 @@ function renderWeeks (year, month)
             if (cell.otherMonth || !isSelectable(year, month, cell.day))
                 daySelectItem.classList.add("unavailable");
             else if (cell.day === selectedDay)
-            {
                 daySelectItem.classList.add("selected");
-                console.log(1);
-            }
 
             daySelectItem.dataset.day = String(cell.day);
             daySelectItem.innerText = `${cell.day}`;
 
             daySelectItem.addEventListener("click", (event) => {
-                selectedDay = Number(event.currentTarget.dataset.day);
+                if (event.currentTarget.classList.contains("unavailable"))
+                    return;
+                
                 renderDayInFooter(event);
                 renderWeeks(year, month);
             });
@@ -145,10 +144,12 @@ function renderTimeSelect (day)
             timeSelectItem1.classList.add("selected");
         timeSelectItem1.append(time1);
         timeSelectItem1.dataset.time = String(slots[i].time);
-        timeSelectItem1.addEventListener("click", (event) => {
-            selectedTime = Number(event.currentTarget.dataset.time);     
+        timeSelectItem1.addEventListener("click", (event) => {   
+            if (event.currentTarget.classList.contains("unavailable"))
+                return;
+            
             renderTimeInFooter(event);
-            renderTimeSelect(selectedDay);
+            renderTimeSelect(selectedDay)
         })
 
         let timeSelectItem2 = document.createElement("button");
@@ -166,9 +167,11 @@ function renderTimeSelect (day)
         timeSelectItem2.append(time2);
         timeSelectItem2.dataset.time = String(slots[i+1].time);
         timeSelectItem2.addEventListener("click", (event) => {
-            selectedTime = Number(event.currentTarget.dataset.time);
+            if (event.currentTarget.classList.contains("unavailable"))
+                return;
+            
             renderTimeInFooter(event);
-            renderTimeSelect(selectedDay);
+            renderTimeSelect(selectedDay)
         })
 
         timeSelectRow.append(timeSelectItem1, timeSelectItem2);
@@ -180,6 +183,8 @@ function renderTimeSelect (day)
 function renderTimeInFooter (event)
 {
     let elem = document.getElementById("selected-time");  
+    
+    selectedTime = Number(event.currentTarget.dataset.time);  
     time = event.currentTarget.dataset.time;
 
     event.currentTarget.classList.add("selected");
@@ -190,6 +195,8 @@ function renderTimeInFooter (event)
 function renderDayInFooter(event)
 {
     let elem = document.getElementById("selected-day");
+
+    selectedDay = Number(event.currentTarget.dataset.day);
     day = event.currentTarget.dataset.day; 
 
     event.currentTarget.classList.add("selected");
