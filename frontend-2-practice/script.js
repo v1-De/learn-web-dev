@@ -5,16 +5,12 @@ const slots = [
     {time: 14, available: true}, {time: 15, available: true},
     {time: 16, available: true}, {time: 17, available: true}
 ];
-const tooday = {
-    year: 2026, 
-    month: 10,
-    day: 11
-};
+const tooday = new Date();
 
 // 2. СОСТОЯНИЕ
 let year = 2026;
-let month = 10;
-let selectedDay = 11;
+let month = 9;
+let selectedDay = 12;
 let selectedTime = 12;
 
 // 3. ЧИТСЫЕ ФУНКЦИИ
@@ -24,18 +20,18 @@ function getMonthName (month)
 
     switch (month)
     {
-        case 1: name = "Январь"; break;
-        case 2: name = "Февраль"; break;
-        case 3: name = "Март"; break;
-        case 4: name = "Апрель"; break;
-        case 5: name = "Май"; break;
-        case 6: name = "Июнь"; break;
-        case 7: name = "Июль"; break;
-        case 8: name = "Август"; break;
-        case 9: name = "Сентябрь"; break;
-        case 10: name = "Октябрь"; break;
-        case 11: name = "Ноябрь"; break;
-        case 12: name = "Декабрь"; break;
+        case 0: name = "Январь"; break;
+        case 1: name = "Февраль"; break;
+        case 2: name = "Март"; break;
+        case 3: name = "Апрель"; break;
+        case 4: name = "Май"; break;
+        case 5: name = "Июнь"; break;
+        case 6: name = "Июль"; break;
+        case 7: name = "Август"; break;
+        case 8: name = "Сентябрь"; break;
+        case 9: name = "Октябрь"; break;
+        case 10: name = "Ноябрь"; break;
+        case 11: name = "Декабрь"; break;
     }
 
     return name;
@@ -46,7 +42,7 @@ function compareDates (a, b)
     const d1 = new Date(a.year, a.month, a.day);
     const d2 = new Date(b.year, b.month, b.day);
     if (d1 < d2) return -1;
-    if (d2 > d1) return 1;
+    if (d2 < d1) return 1;
     return 0;
 }
 
@@ -83,7 +79,8 @@ function buildCalendarGrid (year, month)
 
 function isSelectable (year, month, day)
 {
-    return compareDates({year: year, month: month, day:day}, tooday) === -1 ? true : false;
+    return compareDates({year: year, month: month, day:day},
+        {year: tooday.getFullYear(), month: tooday.getMonth(), day: tooday.getDate()}) >= 0 ? true : false;
 }
 
 // 4. ОТРИСОВКА И ОБРАБОТЧИКИ
@@ -100,16 +97,21 @@ function renderWeeks (year, month)
         week.forEach((cell) => {
             let daySelectItem = document.createElement("span");
             daySelectItem.className = "day"
-            if (cell.otherMonth || isSelectable(year, month, cell.day))
-                daySelectItem.className += " unavailable";
+            if (cell.otherMonth || !isSelectable(year, month, cell.day))
+                daySelectItem.classList.add("unavailable");
             else if (cell.day === selectedDay)
-                daySelectItem.className += " selected";
+            {
+                daySelectItem.classList.add("selected");
+                console.log(1);
+            }
 
-            daySelectItem.dataset.day = cell.day;
+            daySelectItem.dataset.day = String(cell.day);
             daySelectItem.innerText = `${cell.day}`;
 
             daySelectItem.addEventListener("click", (event) => {
-                renderDayInFooter(event)
+                selectedDay = Number(event.currentTarget.dataset.day);
+                renderDayInFooter(event);
+                renderWeeks(year, month);
             });
 
             daySelectRow.append(daySelectItem);
@@ -142,9 +144,11 @@ function renderTimeSelect (day)
         else if (slots[i].time === selectedTime)
             timeSelectItem1.classList.add("selected");
         timeSelectItem1.append(time1);
-        timeSelectItem1.dataset.time = slots[i].time;
+        timeSelectItem1.dataset.time = String(slots[i].time);
         timeSelectItem1.addEventListener("click", (event) => {
+            selectedTime = Number(event.currentTarget.dataset.time);     
             renderTimeInFooter(event);
+            renderTimeSelect(selectedDay);
         })
 
         let timeSelectItem2 = document.createElement("button");
@@ -160,9 +164,11 @@ function renderTimeSelect (day)
         else if (slots[i+1].time === selectedTime)
             timeSelectItem2.classList.add("selected");
         timeSelectItem2.append(time2);
-        timeSelectItem2.dataset.time = slots[i+1].time;
+        timeSelectItem2.dataset.time = String(slots[i+1].time);
         timeSelectItem2.addEventListener("click", (event) => {
+            selectedTime = Number(event.currentTarget.dataset.time);
             renderTimeInFooter(event);
+            renderTimeSelect(selectedDay);
         })
 
         timeSelectRow.append(timeSelectItem1, timeSelectItem2);
@@ -173,10 +179,7 @@ function renderTimeSelect (day)
 
 function renderTimeInFooter (event)
 {
-    let elem = document.getElementById("selected-time");
-    if (elem.innerText !== "")
-        return;
-    
+    let elem = document.getElementById("selected-time");  
     time = event.currentTarget.dataset.time;
 
     event.currentTarget.classList.add("selected");
@@ -187,13 +190,10 @@ function renderTimeInFooter (event)
 function renderDayInFooter(event)
 {
     let elem = document.getElementById("selected-day");
-    if (elem.innerText !== "")
-        return;
-
     day = event.currentTarget.dataset.day; 
 
     event.currentTarget.classList.add("selected");
-    elem.innerText = `${day}.${month}.${year},`;
+    elem.innerText = `${String(day).padStart(2, "0")}.${String(month).padStart(2, "0")}.${String(year)},`;
 }
 
 function renderCalebdarLabel ()
@@ -211,9 +211,9 @@ function nextMonth ()
     let selectedTimeElement = document.getElementById("selected-time");
     selectedTimeElement.innerText = "";
 
-    if (month + 1 > 12)
+    if (month + 1 > 11)
     {
-        month = 1;
+        month = 0;
         year += 1;
     }
     else
@@ -228,12 +228,14 @@ function prevMonth ()
 {
     selectedDay = null;
     selectedTime = null;
-    let selectedDate = document.getElementById("selected-date");
-    selectedDate.innerText = "";
+    let selectedDayElement = document.getElementById("selected-day");
+    selectedDayElement.innerText = "";
+    let selectedTimeElement = document.getElementById("selected-time");
+    selectedTimeElement.innerText = "";
 
-    if (month - 1 < 1)
+    if (month - 1 < 0)
     {
-        month = 12;
+        month = 11;
         year -= 1;
     }
     else
