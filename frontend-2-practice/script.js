@@ -10,8 +10,8 @@ const tooday = new Date();
 // 2. СОСТОЯНИЕ
 let year = 2026;
 let month = 9;
-let selectedDay = 12;
-let selectedTime = 12;
+let selectedDay = new Date().getDate();
+let selectedTime = 12 + (Math.round(new Date().getHours()) % 6);
 
 // 3. ЧИТСЫЕ ФУНКЦИИ
 function getMonthName (month)
@@ -109,8 +109,13 @@ function renderWeeks (year, month)
                 if (event.currentTarget.classList.contains("unavailable"))
                     return;
                 
+                selectedTime = null;
+
                 renderDayInFooter(event);
+                renderTimeInFooter(null);
                 renderWeeks(year, month);
+                renderTimeSelect(selectedDay);
+                updateNextBtn();
             });
 
             daySelectRow.append(daySelectItem);
@@ -120,7 +125,7 @@ function renderWeeks (year, month)
     })
 }
 
-function renderTimeSelect (day)
+function renderTimeSelect ()
 {
     let container = document.getElementById ("time-select-list");
     container.replaceChildren();
@@ -135,7 +140,7 @@ function renderTimeSelect (day)
         time1.className = "time";
         time1.innerText = slots[i].time
         timeSelectItem1.classList.add("time-select-item");
-        if (!slots[i].available)
+        if (!slots[i].available || selectedDay === null)
         {
             timeSelectItem1.classList.add("unavailable");
             timeSelectItem1.disabled = true;
@@ -149,7 +154,8 @@ function renderTimeSelect (day)
                 return;
             
             renderTimeInFooter(event);
-            renderTimeSelect(selectedDay)
+            renderTimeSelect(selectedDay);
+                        updateNextBtn();
         })
 
         let timeSelectItem2 = document.createElement("button");
@@ -157,12 +163,12 @@ function renderTimeSelect (day)
         time2.className = "time";
         time2.innerText = slots[i+1].time
         timeSelectItem2.className = "time-select-item"
-        if (!slots[i+1].available)
+        if (!slots[i+1].available || selectedDay === null)
         {
             timeSelectItem2.classList.add("unavailable");
             timeSelectItem2.disabled = true;
         }
-        else if (slots[i+1].time === selectedTime)
+        else if (slots[i+1].time === selectedTime && selectedDay !== null)
             timeSelectItem2.classList.add("selected");
         timeSelectItem2.append(time2);
         timeSelectItem2.dataset.time = String(slots[i+1].time);
@@ -171,7 +177,8 @@ function renderTimeSelect (day)
                 return;
             
             renderTimeInFooter(event);
-            renderTimeSelect(selectedDay)
+            renderTimeSelect(selectedDay);
+            updateNextBtn();
         })
 
         timeSelectRow.append(timeSelectItem1, timeSelectItem2);
@@ -184,26 +191,59 @@ function renderTimeInFooter (event)
 {
     let elem = document.getElementById("selected-time");  
     
-    selectedTime = Number(event.currentTarget.dataset.time);  
-    time = event.currentTarget.dataset.time;
+    if (event !== null)
+    {
+        selectedTime = Number(event.currentTarget.dataset.time);
+        time = event.currentTarget.dataset.time; 
+        event.currentTarget.classList.add("selected");
+    }
+    else
+        time = selectedTime;
 
-    event.currentTarget.classList.add("selected");
-
-    elem.innerText = `${time}:00`;
+    if (time !== null)
+        elem.innerText = `${time}:00`;
+    else
+        elem.innerText = "";
 }
 
 function renderDayInFooter(event)
 {
     let elem = document.getElementById("selected-day");
 
-    selectedDay = Number(event.currentTarget.dataset.day);
-    day = event.currentTarget.dataset.day; 
+    if (event !== null)
+    {
+        selectedDay = Number(event.currentTarget.dataset.day);
+        day = event.currentTarget.dataset.day; 
+        event.currentTarget.classList.add("selected");
+    }
+    else
+        day = selectedDay;
 
-    event.currentTarget.classList.add("selected");
-    elem.innerText = `${String(day).padStart(2, "0")}.${String(month).padStart(2, "0")}.${String(year)},`;
+
+    if (day !== null)
+        elem.innerText = `${String(day).padStart(2, "0")}.${String(month+1).padStart(2, "0")}.${String(year)},`;
+    else
+        elem.innerText = "";
 }
 
-function renderCalebdarLabel ()
+function updateNextBtn ()
+{
+    let nextBtn = document.getElementById("next-btn");
+    if (!nextBtn) return;
+
+    if (selectedDay === null || selectedTime === null)
+    {
+        nextBtn.classList.add("disabled");
+        nextBtn.disabled = true;
+    }
+    else
+    {
+        nextBtn.classList.remove("disabled");
+        nextBtn.disabled = false;
+    }
+}
+
+function renderCalendarLabel ()
 {
     let calendarLabel = document.getElementById("calendar-label");
     calendarLabel.innerText = `${getMonthName(month)} ${year}`;
@@ -226,9 +266,10 @@ function nextMonth ()
     else
         month += 1;
 
-    renderCalebdarLabel();
+    renderCalendarLabel();
     renderWeeks(year, month);
     renderTimeSelect(selectedDay);
+    updateNextBtn();
 }
 
 function prevMonth ()
@@ -248,27 +289,35 @@ function prevMonth ()
     else
         month -= 1;
 
-    renderCalebdarLabel();
+    renderCalendarLabel();
     renderWeeks(year, month);
     renderTimeSelect(selectedDay);
+    updateNextBtn();
 }
 
 // 5. ИНИЦИЛИЗАЦИЯ
 function init()
 {
-    let netxBtn = document.getElementById("next-month-btn");
-    let prevBtn = document.getElementById("prev-month-btn");
+    let nextMonthBtn = document.getElementById("next-month-btn");
+    let prevMonthBtn = document.getElementById("prev-month-btn");
+    let netxBtn = document.getElementById("next-btn");
 
-    netxBtn.addEventListener("click", () => {
+    nextMonthBtn.addEventListener("click", () => {
         nextMonth()
-    })
-    prevBtn.addEventListener("click", () => {
+    });
+    prevMonthBtn.addEventListener("click", () => {
         prevMonth()
-    })
+    });
+    netxBtn.addEventListener("click", () =>{
+        alert(`Вы выбрали запись на: ${String(day).padStart(2, "0")}.${String(month+1).padStart(2, "0")}.${String(year)}, в 12:00`)
+    });
 
-    renderCalebdarLabel();
+    renderCalendarLabel();
     renderWeeks(year, month)
     renderTimeSelect (selectedDay);
+    renderDayInFooter(null);
+    renderTimeInFooter(null);
+    updateNextBtn();
 }
 
 

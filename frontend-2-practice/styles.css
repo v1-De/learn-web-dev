@@ -381,7 +381,25 @@ footer
 
 .next-btn:hover
 {
-  background-color: #2792c7;
+  background-color: #000;
+  color: #33BBFF;
+}
+
+.next-btn.disabled
+{
+  background-color: #63cbff;
+  color: #3a3a3a;
+  padding: 10px;
+  border-radius: 2em;
+  border: none;
+  cursor: not-allowed;
+  font-weight: bold;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 120px;
 }
 
 .line
