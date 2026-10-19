@@ -5,16 +5,15 @@ export function DaySelectList ({
     month, setMonth,
     weeks, setWeeks,
     selectedDay, setSelectedDay,
-    selectedTime, setSelectedTime})
+    selectedTime, setSelectedTime,
+    today})
 {
-    const tooday = new Date();
-
     return (
         <div className="day-select" id = "day-select">
-            {weeks.map((week) => (
-                <div className="days-row">
+            {weeks.map((week, weekIndex) => (
+                <div className="days-row" key={weekIndex}>
                     {week.map((cell) => {
-                        const unavailable = cell.otherMonth || !isSelectable(year, month, cell.day, tooday);
+                        const unavailable = cell.otherMonth || !isSelectable(year, month, cell.day, today);
                         const selected = !cell.otherMonth && cell.day === selectedDay;
                         return (
                             <button
@@ -22,6 +21,7 @@ export function DaySelectList ({
                                 unavailable && "unavailable",
                                 selected && "selected"].filter(Boolean).join(" ")}
                                 disabled={unavailable}
+                                key={cell.day}
                                 onClick={() => {
                                     selectedTime=setSelectedTime(null)
                                     selectedDay=setSelectedDay(cell.day)
