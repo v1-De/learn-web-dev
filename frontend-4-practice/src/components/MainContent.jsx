@@ -1,16 +1,53 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { buildCalendarGrid, getMonthName } from "../utils/date.js";
 import { DaySelectList } from "./DaySelectList.jsx";
 import { TimeSelectList } from "./TimeSelectList.jsx"; 
 import { DaySelectLabels } from "./DaySelectLabels.jsx";
+import { FooterCta } from "./FooterCta.jsx";
+import { fetchToday } from "../api.js";
 
 export function MainContent ()
 {
-    let [year, setYear] = useState(new Date().getFullYear());
-    let [month, setMonth] = useState(new Date().getMonth());
-    let [weeks, setWeeks] = useState(buildCalendarGrid(year, month));
-    let [selectedDay, setSelectedDay] = useState(new Date().getDate());
-    let [selectedTime, setSelectedTime] = useState("14:30");
+    const [year, setYear] = useState(null);
+    const [month, setMonth] = useState(null);
+    const [weeks, setWeeks] = useState(buildCalendarGrid(year, month));
+    const [selectedDay, setSelectedDay] = useState(null);
+    const [selectedTime, setSelectedTime] = useState(null);
+    
+    const [today, setToday] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    async function loadToday()
+    {
+        setIsLoading(true);
+        setError(null);
+
+        try
+        {
+            const data = await fetchToday();
+            setToday(new Date(data.year, data.month, data.day));
+            setYear(data.year);
+            setMonth(data.month);
+            setSelectedDay(data.day);
+        }
+        catch (error)
+        {
+            setError(error);
+        }
+        finally
+        {
+            setIsLoading(false);
+        }
+    }
+
+    useEffect (() => {
+        loadToday();
+    }, []);
+
+    useEffect(() => {
+      setWeeks(buildCalendarGrid(year, month))
+    }, [year, month])
 
     return (
        <main>      
@@ -29,15 +66,17 @@ export function MainContent ()
                 <button className="calendar-control-btn" id = "prev-month-btn"
                 onClick={() => 
                     {
-                    if (month - 1 >= 0)
-                        setMonth(month - 1);
-                    else
-                    {
-                        setMonth(11)
-                        setYear(year - 1);
-                    }
-                                        setSelectedDay(null);
-                    setSelectedTime(null);
+                      if (month - 1 < today.getMonth() && year === today.getFullYear())
+                        return;
+                      if (month - 1 >= 0)
+                          setMonth(month - 1);
+                      else
+                      {
+                          setMonth(11)
+                          setYear(year - 1);
+                      }
+                      setSelectedDay(null);
+                      setSelectedTime(null);
                 }}>&lt;</button>
 
                 <button className="calendar-control-btn" id = "next-month-btn"
@@ -56,18 +95,21 @@ export function MainContent ()
             </div>
             <DaySelectLabels />
             <DaySelectList
-                year={year}
-                month={month}
-                weeks={weeks}
+                year={year} setYear={setYear}
+                month={month} setMonth={setMonth}
+                weeks={weeks} setWeeks={setWeeks}
                 selectedDay={selectedDay} setSelectedDay={setSelectedDay}
-                setSelectedTime={setSelectedTime}
+                selectedTime={selectedTime} setSelectedTime={setSelectedTime}
+                today={today}
+                isLoading={isLoading}
+                error={error}
             />
           </div>
           <div className="time-select">
             <div className="time-select-header">
               <h1 className="time-select-label">Доступное время</h1>
             </div>
-            <TimeSelectList
+            <TimeSelectList 
               selectedTime={selectedTime}
               setSelectedTime={setSelectedTime}
               selectedDay={selectedDay}
@@ -75,29 +117,11 @@ export function MainContent ()
               month={month}/>
           </div>
         </div>
-        <div className="footer-cta-bar">
-            <div className="footer-cta-content">
-              <div className="footer-cta-text">Запись на:</div>
-                <div className="footer-cta-text" id = "selected-day">
-                    {selectedDay === null ? "": `${String(selectedDay).padStart(2, "0")}.${String(month+1).padStart(2, "0")}.${String(year)},`}
-                </div>
-                <div className="footer-cta-text" id = "selected-time">
-                    {selectedTime===null ? "" : `${selectedTime}`}
-                </div>
-            </div>
-            <button type="button"
-                className={[
-                    "next-btn",
-                    (selectedDay === null || selectedTime === null) && "disabled"
-                ].filter(Boolean).join(" ")}
-                disabled={(selectedDay === null || selectedTime === null)}
-                id="next-btn" onClick={() => {
-                alert("Вы выбрали запись на: " +
-                    `${String(selectedDay).padStart(2, "0")}.${String(month+1).padStart(2, "0")}.${String(year)}, ${selectedTime}`)
-                }}>
-                    Далее      
-            </button>
-        </div>
+        <FooterCta
+          selectedDay={selectedDay}
+          month={month}
+          year={year}
+          selectedTime={selectedTime}/>
       </main> 
     );
 }

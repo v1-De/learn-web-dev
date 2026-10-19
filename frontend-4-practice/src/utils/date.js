@@ -1,5 +1,3 @@
-import { fetchSlots, fetchToday } from "../api";
-
 export function getMonthName (month)
 {
     let name = "";
@@ -63,7 +61,26 @@ export function buildCalendarGrid (year, month)
   return weeks;
 }
 
-export function isSelectable (year, month, day, tooday)
+export function isSelectable (year, month, day, today)
 {
-    return compareDates({year: year, month: month, day:day}, tooday) >= 0 ? true : false;
+    return compareDates({year: year, month: month, day:day},
+        {year: today.getFullYear(), month: today.getMonth(), day: today.getDate()}) >= 0 ? true : false;
+}
+
+export function getDayName (day)
+{
+  let name = "";
+
+  switch (day)
+  {
+      case 0: name = "Вс"; break;  
+      case 1: name = "Пн"; break;
+      case 2: name = "Вт"; break;
+      case 3: name = "Ср"; break;
+      case 4: name = "Чт"; break;
+      case 5: name = "Пт"; break;
+      case 6: name = "Сб"; break;
+  }
+
+  return name;
 }

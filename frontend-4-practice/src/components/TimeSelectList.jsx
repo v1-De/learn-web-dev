@@ -30,8 +30,10 @@ export function TimeSelectList ({selectedTime, setSelectedTime, selectedDay, yea
     useEffect (() => {
         if (selectedDay !== null)
             loadSlots({day: selectedDay, year: year, month: month})
+        else
+            setSlots([])
         
-    }, [selectedDay])
+    }, [selectedDay, year, month])
 
     if (error)
     {
@@ -52,13 +54,13 @@ export function TimeSelectList ({selectedTime, setSelectedTime, selectedDay, yea
     else
     return (
         <div className="time-select-list" id = "time-select-list">
-            {slots.map ((slot) => 
+            {slots.map ((slot, slotIndex) => 
                 (<button className={[
                     "time-select-item",
                     (!slot.available || selectedDay === null) && "unavailable",
                     (selectedTime === slot.time) && "selected"
                 ].filter(Boolean).join(" ")}
-                
+                key={slotIndex}
                 disabled={(!slot.available || selectedDay === null) }
                 onClick={() => {
                     setSelectedTime(slot.time)
