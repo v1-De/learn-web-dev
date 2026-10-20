@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { isSelectable } from "../utils/date";
 import { useEffect } from "react";
 
 export function TimeSelectList ({selectedTime, setSelectedTime, selectedDay, year, month})
@@ -22,7 +21,7 @@ export function TimeSelectList ({selectedTime, setSelectedTime, selectedDay, yea
         });
 
         setSlots(newSlots);
-    },[selectedDay])
+    },[selectedDay, year, month])
     
     return (
         <div className="time-select-list" id = "time-select-list">

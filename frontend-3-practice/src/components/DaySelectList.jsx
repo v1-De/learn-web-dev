@@ -23,8 +23,8 @@ export function DaySelectList ({
                                 disabled={unavailable}
                                 key={cell.day}
                                 onClick={() => {
-                                    selectedTime=setSelectedTime(null)
-                                    selectedDay=setSelectedDay(cell.day)
+                                    setSelectedTime(null)
+                                    setSelectedDay(cell.day)
                                 }}>
                                     {cell.day}
                                 </button>
