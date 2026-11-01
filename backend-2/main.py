@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi import HTTPException
 
 categories = [
     { "id": 1, "name": "Стрижки и укладка", "servicesCount": 5 },
@@ -18,4 +19,4 @@ def getCategoriesById (categorie_id: int):
     for categorie in categories:
         if categorie["id"] == categorie_id:
             return categorie
-    return null
+    raise HTTPException (404, detail="Service not found")
